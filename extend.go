@@ -1,4 +1,4 @@
-package fences
+package customblock
 
 import (
 	"github.com/yuin/goldmark"

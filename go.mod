@@ -1,4 +1,4 @@
-module github.com/quail-ink/goldmark-fences
+module github.com/quail-ink/goldmark-customblock
 
 go 1.20
 
