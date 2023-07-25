@@ -83,7 +83,6 @@ func (b *fencedContainerParser) Open(parent ast.Node, reader text.Reader, pc par
 	node.SetAttributeString("data-fence", []byte(fenceID))
 
 	containerTop := strings.ToLower(string(line[i:]))
-	fmt.Printf("containerTop: %v\n", containerTop)
 
 	containerType := "info"
 	containerTitle := ""
@@ -122,8 +121,6 @@ func (b *fencedContainerParser) Open(parent ast.Node, reader text.Reader, pc par
 		contentIndent:     0,
 		contentHasStarted: false,
 	}
-
-	fmt.Printf("fdata.node: %+v\n", fdata.node)
 
 	var fdataMap []*fenceData
 
