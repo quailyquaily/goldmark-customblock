@@ -87,9 +87,17 @@ func (b *fencedContainerParser) Open(parent ast.Node, reader text.Reader, pc par
 	containerType := "info"
 	containerTitle := ""
 	parts := strings.Split(containerTop, " ")
-	if len(parts) > 1 {
-		containerType = strings.TrimSpace(parts[0])
-		containerTitle = strings.TrimSpace(containerTop[len(parts[0]):])
+	// remove empty parts
+	filterParts := make([]string, 0)
+	for i := 0; i < len(parts); i++ {
+		p := strings.TrimSpace(parts[i])
+		if p != "" {
+			filterParts = append(filterParts, p)
+		}
+	}
+	if len(filterParts) > 1 {
+		containerType = strings.TrimSpace(filterParts[0])
+		containerTitle = strings.TrimSpace(strings.Join(filterParts[1:], " "))
 	} else {
 		containerType = strings.TrimSpace(containerTop)
 		switch containerType {
@@ -107,7 +115,7 @@ func (b *fencedContainerParser) Open(parent ast.Node, reader text.Reader, pc par
 	}
 
 	node.SetAttribute([]byte("class"), []byte(fmt.Sprintf("custom-block %s", containerType)))
-	node.SetAttribute([]byte("data-label"), []byte(containerTitle))
+	node.SetAttribute([]byte("data-title"), []byte(containerTitle))
 	node.SetTitle(containerTitle)
 
 	reader.Advance(right - left + 1)
