@@ -1,6 +1,7 @@
 package fences
 
 import (
+	"fmt"
 	"regexp"
 
 	"github.com/yuin/goldmark/ast"
@@ -46,6 +47,8 @@ func (r *Renderer) renderFencedContainer(w util.BufWriter, source []byte, node a
 		} else {
 			_, _ = w.WriteString("<" + n.element + ">\n")
 		}
+
+		_, _ = w.WriteString(fmt.Sprintf("<div class=\"custom-block-title\">%s</div>\n", n.Title))
 	} else {
 		_, _ = w.WriteString("</" + n.element + ">\n")
 	}

@@ -8,6 +8,7 @@ import (
 type FencedContainer struct {
 	ast.BaseBlock
 	element string
+	Title   string
 }
 
 // Dump implements Node.Dump .
@@ -28,4 +29,8 @@ func NewFencedContainer() *FencedContainer {
 	return &FencedContainer{
 		BaseBlock: ast.BaseBlock{},
 	}
+}
+
+func (n *FencedContainer) SetTitle(title string) {
+	n.Title = title
 }

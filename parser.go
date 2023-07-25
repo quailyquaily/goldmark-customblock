@@ -2,6 +2,7 @@ package fences
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/yuin/goldmark/ast"
 	"github.com/yuin/goldmark/parser"
@@ -81,12 +82,36 @@ func (b *fencedContainerParser) Open(parent ast.Node, reader text.Reader, pc par
 	fenceID := genRandomString(24)
 	node.SetAttributeString("data-fence", []byte(fenceID))
 
-	attrs, ok := parser.ParseAttributes(reader)
-	if ok {
-		for _, attr := range attrs {
-			node.SetAttribute(attr.Name, attr.Value)
+	containerTop := strings.ToLower(string(line[i:]))
+	fmt.Printf("containerTop: %v\n", containerTop)
+
+	containerType := "info"
+	containerTitle := ""
+	parts := strings.Split(containerTop, " ")
+	if len(parts) > 1 {
+		containerType = strings.TrimSpace(parts[0])
+		containerTitle = strings.TrimSpace(containerTop[len(parts[0]):])
+	} else {
+		containerType = strings.TrimSpace(containerTop)
+		switch containerType {
+		case "info":
+			containerTitle = "INFO"
+		case "warning":
+			containerTitle = "WARNING"
+		case "danger":
+			containerTitle = "DANGER"
+		case "tip":
+			containerTitle = "TIP"
+		default:
+			containerTitle = "INFO"
 		}
 	}
+
+	node.SetAttribute([]byte("class"), []byte(fmt.Sprintf("custom-block %s", containerType)))
+	node.SetAttribute([]byte("data-label"), []byte(containerTitle))
+	node.SetTitle(containerTitle)
+
+	reader.Advance(right - left + 1)
 
 	fdata := &fenceData{
 		fenceID:           fenceID,
@@ -97,6 +122,8 @@ func (b *fencedContainerParser) Open(parent ast.Node, reader text.Reader, pc par
 		contentIndent:     0,
 		contentHasStarted: false,
 	}
+
+	fmt.Printf("fdata.node: %+v\n", fdata.node)
 
 	var fdataMap []*fenceData
 
