@@ -1,3 +1,10 @@
+> [!WARNING]
+> This project is discontinued.
+> 
+> Please use [goldmark-enclave](https://github.com/quailyquaily/goldmark-enclave). It supports fence and github style callout.
+
+----
+
 # Goldmark-Customblock
 
 ## Overview
